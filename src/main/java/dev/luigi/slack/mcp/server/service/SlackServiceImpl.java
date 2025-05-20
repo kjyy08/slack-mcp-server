@@ -10,17 +10,16 @@ import dev.luigi.slack.mcp.server.service.message.MessageService;
 import dev.luigi.slack.mcp.server.service.reaction.ReactionService;
 import dev.luigi.slack.mcp.server.service.schedule.ScheduleService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.annotation.ToolParam;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class SlackServiceImpl implements SlackService {
     private final MessageService messageService;
     private final ScheduleService scheduleService;
@@ -35,7 +34,9 @@ public class SlackServiceImpl implements SlackService {
             슬랙으로 메시지를 전송합니다
             """)
     @Override
-    public PostMessageResponse postMessage(@ToolParam(description = "슬랙 요청 메시지, 마크다운 일부 지원") String text) {
+    public PostMessageResponse postMessage(
+            @ToolParam(description = "슬랙 요청 메시지, 마크다운 일부 지원") String text
+    ) {
         TextObject textObject = TextObject.builder()
                 .type("mrkdwn")
                 .text(text)
@@ -51,13 +52,26 @@ public class SlackServiceImpl implements SlackService {
                 .blocks(List.of(block))
                 .build();
 
-        log.info("sendMessage: {}", postMessageRequest);
         return messageService.postMessage(postMessageRequest);
     }
 
+    @Tool(name = "fetchChannelHistory", description = """
+            슬랙 채널의 메시지 내역을 조회합니다
+            """)
     @Override
-    public FetchHistoryResponse fetchChannelHistory(FetchHistoryRequest req) {
-        return channelHistoryService.fetchChannelHistory(req);
+    public FetchHistoryResponse fetchChannelHistory(
+            @ToolParam(required = false, description = "조회 메시지 수의 최대값")
+            @RequestParam(defaultValue = "50") int limit,
+            @ToolParam(description = "페이징 처리를 위한 커서, 이전 요청의 응답에서 받은 커서를 사용해 다음 페이지를 조회")
+            String cursor
+    ) {
+        FetchHistoryRequest fetchHistoryRequest = FetchHistoryRequest.builder()
+                .channel(channelId)
+                .limit(limit)
+                .cursor(cursor)
+                .build();
+
+        return channelHistoryService.fetchChannelHistory(fetchHistoryRequest);
     }
 
     @Override
