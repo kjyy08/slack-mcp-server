@@ -38,8 +38,8 @@ public class SlackServiceImpl implements SlackService {
             @ToolParam(description = """
                     기존의 마크다운 문법 대신 다음 형식의 슬랙 전용 마크다운 문법을 지켜서 입력하세요:
                     
-                    - *굵게* (❌ **굵게** 사용 금지)
-                    - _기울임_ (❌ __기울임__ 사용 금지)
+                    - *굵게* (**굵게** 사용 금지)
+                    - _기울임_ (__기울임__ 사용 금지)
                     - `인라인 코드`
                     - ```여러 줄 코드```
                     - > 인용
@@ -47,7 +47,7 @@ public class SlackServiceImpl implements SlackService {
                     - <http://url|링크 텍스트>
                     - 줄바꿈은 두 줄 사이 공백 또는 \\n 사용
                     
-                    ❗ 표, 헤더(# 제목), 이미지, HTML 태그는 지원되지 않습니다.
+                    표, 헤더(# 제목), 이미지, HTML 태그는 지원되지 않습니다.
                     """) String text
     ) {
         TextObject textObject = TextObject.builder()
