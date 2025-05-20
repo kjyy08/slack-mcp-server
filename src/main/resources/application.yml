@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: slack-mcp-server
+  profiles:
+    active: dev
+
+server:
+  port: 8180
