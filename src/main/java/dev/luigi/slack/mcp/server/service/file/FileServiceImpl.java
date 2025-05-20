@@ -1,14 +1,15 @@
-package dev.luigi.slack.mcp.server.repository;
+package dev.luigi.slack.mcp.server.service.file;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.luigi.slack.mcp.server.dto.request.UploadFileRequest;
 import dev.luigi.slack.mcp.server.dto.response.UploadFileResponse;
+import dev.luigi.slack.mcp.server.service.common.AbstractSlackService;
 import dev.luigi.slack.mcp.server.util.CustomHttpClient;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
-@Repository
-public class FileRepositoryImpl extends AbstractSlackRepository implements FileRepository {
-    public FileRepositoryImpl(CustomHttpClient httpClient, ObjectMapper objectMapper) {
+@Service
+public class FileServiceImpl extends AbstractSlackService implements FileService {
+    public FileServiceImpl(CustomHttpClient httpClient, ObjectMapper objectMapper) {
         super(httpClient, objectMapper);
     }
 

@@ -1,8 +1,14 @@
 package dev.luigi.slack.mcp.server.service;
 
+import dev.luigi.slack.mcp.server.dto.common.Block;
+import dev.luigi.slack.mcp.server.dto.common.TextObject;
 import dev.luigi.slack.mcp.server.dto.request.*;
 import dev.luigi.slack.mcp.server.dto.response.*;
-import dev.luigi.slack.mcp.server.repository.*;
+import dev.luigi.slack.mcp.server.service.file.FileService;
+import dev.luigi.slack.mcp.server.service.history.ChannelHistoryService;
+import dev.luigi.slack.mcp.server.service.message.MessageService;
+import dev.luigi.slack.mcp.server.service.reaction.ReactionService;
+import dev.luigi.slack.mcp.server.service.schedule.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.tool.annotation.Tool;
@@ -10,15 +16,17 @@ import org.springframework.ai.tool.annotation.ToolParam;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class SlackServiceImpl implements SlackService {
-    private final MessageRepository messageRepository;
-    private final ScheduleRepository scheduleRepository;
-    private final FileRepository fileRepository;
-    private final ReactionRepository reactionRepository;
-    private final ChannelHistoryRepository channelHistoryRepository;
+    private final MessageService messageService;
+    private final ScheduleService scheduleService;
+    private final FileService fileService;
+    private final ReactionService reactionService;
+    private final ChannelHistoryService channelHistoryService;
 
     @Value("${slack.slack-channel-id}")
     private String channelId;
@@ -27,53 +35,48 @@ public class SlackServiceImpl implements SlackService {
             슬랙으로 메시지를 전송합니다
             """)
     @Override
-    public PostMessageResponse postMessage(@ToolParam(description = "슬랙에 전송할 메시지") String text) {
-        PostMessageRequest postMessageRequest = PostMessageRequest.builder()
-                .channel(channelId)
+    public PostMessageResponse postMessage(@ToolParam(description = "슬랙 요청 메시지, 마크다운 일부 지원") String text) {
+        TextObject textObject = TextObject.builder()
+                .type("mrkdwn")
                 .text(text)
                 .build();
-        log.info("sendMessage: {}", postMessageRequest);
 
-        return messageRepository.postMessage(postMessageRequest);
+        Block block = Block.builder()
+                .type("section")
+                .text(textObject)
+                .build();
+
+        PostMessageRequest postMessageRequest = PostMessageRequest.builder()
+                .channel(channelId)
+                .blocks(List.of(block))
+                .build();
+
+        log.info("sendMessage: {}", postMessageRequest);
+        return messageService.postMessage(postMessageRequest);
     }
 
-    //    @Tool(name = "fetchHistory", description = """
-//
-//            """)
     @Override
     public FetchHistoryResponse fetchChannelHistory(FetchHistoryRequest req) {
-        return channelHistoryRepository.fetchChannelHistory(req);
+        return channelHistoryService.fetchChannelHistory(req);
     }
 
-    //    @Tool(name = "uploadFile", description = """
-//
-//            """)
     @Override
     public UploadFileResponse uploadFile(UploadFileRequest req) {
-        return fileRepository.uploadFile(req);
+        return fileService.uploadFile(req);
     }
 
-    //    @Tool(name = "addReaction", description = """
-//
-//            """)
     @Override
     public ReactionResponse addReaction(ReactionRequest req) {
-        return reactionRepository.addReaction(req);
+        return reactionService.addReaction(req);
     }
 
-    //    @Tool(name = "removeReaction", description = """
-//
-//            """)
     @Override
     public ReactionResponse removeReaction(ReactionRequest req) {
-        return reactionRepository.removeReaction(req);
+        return reactionService.removeReaction(req);
     }
 
-    //    @Tool(name = "scheduleMessage", description = """
-//
-//            """)
     @Override
     public ScheduleMessageResponse scheduleMessage(ScheduleMessageRequest req) {
-        return scheduleRepository.scheduleMessage(req);
+        return scheduleService.scheduleMessage(req);
     }
 }

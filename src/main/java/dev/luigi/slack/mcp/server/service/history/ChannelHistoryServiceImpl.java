@@ -1,15 +1,16 @@
-package dev.luigi.slack.mcp.server.repository;
+package dev.luigi.slack.mcp.server.service.history;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.luigi.slack.mcp.server.dto.request.FetchHistoryRequest;
 import dev.luigi.slack.mcp.server.dto.response.FetchHistoryResponse;
+import dev.luigi.slack.mcp.server.service.common.AbstractSlackService;
 import dev.luigi.slack.mcp.server.util.CustomHttpClient;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
-@Repository
-public class ChannelHistoryRepositoryImpl extends AbstractSlackRepository implements ChannelHistoryRepository {
+@Service
+public class ChannelHistoryServiceImpl extends AbstractSlackService implements ChannelHistoryService {
 
-    public ChannelHistoryRepositoryImpl(CustomHttpClient httpClient, ObjectMapper objectMapper) {
+    public ChannelHistoryServiceImpl(CustomHttpClient httpClient, ObjectMapper objectMapper) {
         super(httpClient, objectMapper);
     }
 

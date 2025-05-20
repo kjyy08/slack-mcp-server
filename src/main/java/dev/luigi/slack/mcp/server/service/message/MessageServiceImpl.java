@@ -1,20 +1,21 @@
-package dev.luigi.slack.mcp.server.repository;
+package dev.luigi.slack.mcp.server.service.message;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.luigi.slack.mcp.server.dto.common.HttpClientRequest;
 import dev.luigi.slack.mcp.server.dto.request.PostMessageRequest;
 import dev.luigi.slack.mcp.server.dto.response.PostMessageResponse;
+import dev.luigi.slack.mcp.server.service.common.AbstractSlackService;
 import dev.luigi.slack.mcp.server.util.CustomHttpClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
-@Repository
+@Service
 @Slf4j
-public class MessageRepositoryImpl extends AbstractSlackRepository implements MessageRepository {
+public class MessageServiceImpl extends AbstractSlackService implements MessageService {
     private final String url = "https://slack.com/api/chat.postMessage";
 
-    public MessageRepositoryImpl(CustomHttpClient httpClient, ObjectMapper objectMapper) {
+    public MessageServiceImpl(CustomHttpClient httpClient, ObjectMapper objectMapper) {
         super(httpClient, objectMapper);
     }
 

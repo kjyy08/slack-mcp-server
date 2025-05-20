@@ -1,14 +1,15 @@
-package dev.luigi.slack.mcp.server.repository;
+package dev.luigi.slack.mcp.server.service.reaction;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.luigi.slack.mcp.server.dto.request.ReactionRequest;
 import dev.luigi.slack.mcp.server.dto.response.ReactionResponse;
+import dev.luigi.slack.mcp.server.service.common.AbstractSlackService;
 import dev.luigi.slack.mcp.server.util.CustomHttpClient;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
-@Repository
-public class ReactionRepositoryImpl extends AbstractSlackRepository implements ReactionRepository {
-    public ReactionRepositoryImpl(CustomHttpClient httpClient, ObjectMapper objectMapper) {
+@Service
+public class ReactionServiceImpl extends AbstractSlackService implements ReactionService {
+    public ReactionServiceImpl(CustomHttpClient httpClient, ObjectMapper objectMapper) {
         super(httpClient, objectMapper);
     }
 
