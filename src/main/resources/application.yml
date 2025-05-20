@@ -1,8 +1,24 @@
 spring:
   application:
     name: slack-mcp-server
-  profiles:
-    active: dev
+  main:
+    banner-mode: off
+    web-application-type: none
+  ai:
+    mcp:
+      server:
+        name: slack-mcp-server
+        version: 0.0.1
+        stdio: true
+        type: sync
 
 server:
   port: 8180
+
+logging:
+  pattern:
+    console:
+
+slack:
+  slack-bot-token: ${SLACK_BOT_TOKEN}
+  slack-channel-id: ${SLACK_CHANNEL_ID}

@@ -6,6 +6,7 @@ import dev.luigi.slack.mcp.server.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.tool.annotation.Tool;
+import org.springframework.ai.tool.annotation.ToolParam;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -26,12 +27,13 @@ public class SlackServiceImpl implements SlackService {
             슬랙으로 메시지를 전송합니다
             """)
     @Override
-    public PostMessageResponse postMessage(String text) {
+    public PostMessageResponse postMessage(@ToolParam(description = "슬랙에 전송할 메시지") String text) {
         PostMessageRequest postMessageRequest = PostMessageRequest.builder()
                 .channel(channelId)
                 .text(text)
                 .build();
         log.info("sendMessage: {}", postMessageRequest);
+
         return messageRepository.postMessage(postMessageRequest);
     }
 
