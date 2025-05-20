@@ -31,11 +31,15 @@ public class SlackServiceImpl implements SlackService {
     private String channelId;
 
     @Tool(name = "postMessage", description = """
-            슬랙으로 메시지를 전송합니다
+            슬랙에 전송할 메시지입니다. 다음 마크다운만 지원됩니다:
+            *굵게*, _기울임_, `인라인 코드`, ```블록 코드```, > 인용,
+            - 리스트, 1. 번호 목록, <http://url|링크 텍스트>.
+            줄바꿈은 두 줄 간격 또는 \\n 사용.
+            표, 헤더, 이미지, HTML 태그는 지원되지 않습니다.
             """)
     @Override
     public PostMessageResponse postMessage(
-            @ToolParam(description = "슬랙 요청 메시지, 마크다운 일부 지원") String text
+            @ToolParam(description = "전송 메시지") String text
     ) {
         TextObject textObject = TextObject.builder()
                 .type("mrkdwn")
