@@ -123,7 +123,7 @@ public class SlackServiceImpl implements SlackService {
                 .initialComment(text)
                 .build();
 
-        return fileService.uploadFile(req);
+        return fileService.uploadFileByBase64(req);
     }
 
     @Override

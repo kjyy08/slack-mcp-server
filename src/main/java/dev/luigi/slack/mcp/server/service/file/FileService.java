@@ -6,4 +6,5 @@ import dev.luigi.slack.mcp.server.dto.response.UploadFileResponse;
 public interface FileService {
     UploadFileResponse uploadFile(UploadFileRequest req);
 
+    UploadFileResponse uploadFileByBase64(UploadFileRequest req);
 }
