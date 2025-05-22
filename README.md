@@ -14,15 +14,19 @@
 
 * Slack 채널에 메시지를 전송합니다. 마크다운 형식을 일부 지원합니다.
 
-#### 2. 채널 히스토리 조회 (fetchChannelHistory)
+#### 2. 채널 히스토리 조회 (channelHistory)
 
 * Slack 채널의 메시지 내역을 조회합니다. 페이징 처리를 위한 커서와 조회할 메시지 수를 지정할 수 있습니다.
 
+#### 3. 파일 업로드 (uploadFile)
+
+* 절대 경로로 지정된 파일을 Slack 채널에 업로드합니다.
+
+#### 4. Base64 파일 업로드 (uploadFileByBase64)
+
+* Base64로 인코딩된 파일 데이터를 Slack 채널에 업로드합니다.
+
 ### 구현 예정 도구
-
-#### 1. 파일 업로드 (uploadFile)
-
-* Slack 채널에 파일을 업로드하는 기능입니다.
 
 #### 2. 리액션 추가/삭제 (addReaction/removeReaction)
 
