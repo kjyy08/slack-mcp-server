@@ -1,7 +1,5 @@
 package dev.luigi.slack.mcp.server.service;
 
-import dev.luigi.slack.mcp.server.dto.common.Block;
-import dev.luigi.slack.mcp.server.dto.common.TextObject;
 import dev.luigi.slack.mcp.server.dto.request.*;
 import dev.luigi.slack.mcp.server.dto.response.*;
 import dev.luigi.slack.mcp.server.service.file.FileService;
@@ -14,9 +12,9 @@ import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.annotation.ToolParam;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
+import java.io.File;
+import java.util.Base64;
 
 @Service
 @RequiredArgsConstructor
@@ -48,47 +46,83 @@ public class SlackServiceImpl implements SlackService {
                     - 줄바꿈은 두 줄 사이 공백 또는 \\n 사용
                     
                     표, 헤더(# 제목), 이미지, HTML 태그는 지원되지 않습니다.
-                    """) String text
+                    """)
+            String text
     ) {
-        TextObject textObject = TextObject.builder()
-                .type("mrkdwn")
-                .text(text)
-                .build();
-
-        Block block = Block.builder()
-                .type("section")
-                .text(textObject)
-                .build();
-
         PostMessageRequest postMessageRequest = PostMessageRequest.builder()
                 .channel(channelId)
-                .blocks(List.of(block))
+                .text(text)
                 .build();
 
         return messageService.postMessage(postMessageRequest);
     }
 
-    @Tool(name = "fetchChannelHistory", description = """
+    @Tool(name = "channelHistory", description = """
             슬랙 채널의 메시지 내역을 조회합니다
             """)
     @Override
-    public FetchHistoryResponse fetchChannelHistory(
-            @ToolParam(required = false, description = "조회 메시지 수의 최대값")
-            @RequestParam(defaultValue = "50") int limit,
+    public ChannelHistoryResponse channelHistory(
+            @ToolParam(description = "조회할 메시지 수의 최대값, 기본 값은 25 사용")
+            int limit,
             @ToolParam(description = "페이징 처리를 위한 커서, 이전 요청의 응답에서 받은 커서를 사용해 다음 페이지를 조회")
             String cursor
     ) {
-        FetchHistoryRequest fetchHistoryRequest = FetchHistoryRequest.builder()
+        ChannelHistoryRequest channelHistoryRequest = ChannelHistoryRequest.builder()
                 .channel(channelId)
                 .limit(limit)
                 .cursor(cursor)
                 .build();
 
-        return channelHistoryService.fetchChannelHistory(fetchHistoryRequest);
+        return channelHistoryService.fetchChannelHistory(channelHistoryRequest);
     }
 
+    @Tool(name = "uploadFile", description = """
+            슬랙 채널에 파일을 절대 경로 참조 방식으로 업로드합니다
+            """)
     @Override
-    public UploadFileResponse uploadFile(UploadFileRequest req) {
+    public UploadFileResponse uploadFile(
+            @ToolParam(required = false, description = "업로드할 파일의 절대 경로")
+            String filePath,
+            @ToolParam(description = "업로드할 파일의 제목")
+            String title,
+            @ToolParam(description = "파일에 대한 설명 혹은 전달할 메시지")
+            String text
+    ) {
+        File file = new File(filePath);
+
+        UploadFileRequest req = UploadFileRequest.builder()
+                .channel(channelId)
+                .file(file)
+                .filename("file")
+                .title(title)
+                .initialComment(text)
+                .build();
+
+        return fileService.uploadFile(req);
+    }
+
+    @Tool(name = "uploadFileByBase64", description = """
+            슬랙 채널에 파일을 base64 방식으로 이용하여 업로드합니다
+            """)
+    @Override
+    public UploadFileResponse uploadFileByBase64(
+            @ToolParam(description = "업로드할 파일의 base64 인코딩된 데이터")
+            String fileData,
+            @ToolParam(description = "업로드할 파일의 제목")
+            String title,
+            @ToolParam(description = "파일에 대한 설명 혹은 전달할 메시지")
+            String text
+    ) {
+        byte[] decodedBytes = Base64.getDecoder().decode(fileData);
+
+        UploadFileRequest req = UploadFileRequest.builder()
+                .channel(channelId)
+                .fileData(decodedBytes)
+                .filename("file")
+                .title(title)
+                .initialComment(text)
+                .build();
+
         return fileService.uploadFile(req);
     }
 

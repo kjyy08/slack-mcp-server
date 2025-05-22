@@ -10,7 +10,7 @@ import org.springframework.ai.tool.annotation.ToolParam;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class FetchHistoryRequest {
+public class ChannelHistoryRequest {
     @ToolParam(required = false, description = "조회할 슬랙 채널 ID")
     private String channel;
     @ToolParam(description = "조회 메시지 수의 최대값")
