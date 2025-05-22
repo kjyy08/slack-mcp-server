@@ -81,7 +81,13 @@ public class SlackServiceImpl implements SlackService {
             """)
     @Override
     public UploadFileResponse uploadFile(
-            @ToolParam(required = false, description = "업로드할 파일의 절대 경로")
+            @ToolParam(description = """
+                    업로드할 파일의 절대 경로:
+                    - Windows: 단일 백슬래시 사용
+                      - 예시: D:\\Git\\project\\file.txt
+                    - macOS: 슬래시(`/`)로 경로 구분
+                      - 예시: /Users/name/file.txt
+                    """)
             String filePath,
             @ToolParam(description = "업로드할 파일의 제목")
             String title,
