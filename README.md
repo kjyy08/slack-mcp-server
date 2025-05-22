@@ -28,11 +28,11 @@
 
 ### 구현 예정 도구
 
-#### 2. 리액션 추가/삭제 (addReaction/removeReaction)
+#### 1. 리액션 추가/삭제 (addReaction/removeReaction)
 
 * 메시지에 이모지 리액션을 추가하거나 삭제하는 기능입니다.
 
-#### 3. 예약 메시지 (scheduleMessage)
+#### 2. 예약 메시지 (scheduleMessage)
 
 * 특정 시간에 메시지를 전송하도록 예약하는 기능입니다.
 
