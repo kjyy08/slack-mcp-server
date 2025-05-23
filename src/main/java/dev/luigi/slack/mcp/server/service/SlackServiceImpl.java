@@ -128,7 +128,7 @@ public class SlackServiceImpl implements SlackService {
         UploadFileRequest req = UploadFileRequest.builder()
                 .channel(channelId)
                 .fileData(decodedBytes)
-                .filename("file") // TODO: 파일 이름 설정 필요, 확장자 포함
+                .filename(filename)
                 .title(title)
                 .initialComment(text)
                 .build();
