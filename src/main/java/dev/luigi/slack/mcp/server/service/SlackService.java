@@ -9,9 +9,9 @@ public interface SlackService {
 
     ChannelHistoryResponse channelHistory(int limit, String cursor);
 
-    UploadFileResponse uploadFile(String filePath, String title, String text);
+    UploadFileResponse uploadFile(String filePath, String title, String filename, String text);
 
-    UploadFileResponse uploadFileByBase64(String fileData, String title, String text);
+    UploadFileResponse uploadFileByBase64(String fileData, String title, String filename, String text);
 
     ReactionResponse addReaction(ReactionRequest req);
 

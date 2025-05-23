@@ -91,7 +91,9 @@ public class SlackServiceImpl implements SlackService {
             String filePath,
             @ToolParam(description = "업로드할 파일의 제목")
             String title,
-            @ToolParam(description = "파일에 대한 설명 혹은 전달할 메시지")
+            @ToolParam(description = "확장자를 포함한 파일 이름")
+            String filename,
+            @ToolParam(description = "메시지 내용")
             String text
     ) {
         File file = new File(filePath);
@@ -99,7 +101,7 @@ public class SlackServiceImpl implements SlackService {
         UploadFileRequest req = UploadFileRequest.builder()
                 .channel(channelId)
                 .file(file)
-                .filename("file")
+                .filename(filename)
                 .title(title)
                 .initialComment(text)
                 .build();
@@ -116,7 +118,9 @@ public class SlackServiceImpl implements SlackService {
             String fileData,
             @ToolParam(description = "업로드할 파일의 제목")
             String title,
-            @ToolParam(description = "파일에 대한 설명 혹은 전달할 메시지")
+            @ToolParam(description = "확장자를 포함한 파일 이름")
+            String filename,
+            @ToolParam(description = "메시지 내용")
             String text
     ) {
         byte[] decodedBytes = Base64.getDecoder().decode(fileData);
@@ -124,7 +128,7 @@ public class SlackServiceImpl implements SlackService {
         UploadFileRequest req = UploadFileRequest.builder()
                 .channel(channelId)
                 .fileData(decodedBytes)
-                .filename("file")
+                .filename("file") // TODO: 파일 이름 설정 필요, 확장자 포함
                 .title(title)
                 .initialComment(text)
                 .build();
