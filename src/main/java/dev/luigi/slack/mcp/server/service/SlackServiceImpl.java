@@ -91,7 +91,7 @@ public class SlackServiceImpl implements SlackService {
             String filePath,
             @ToolParam(description = "업로드할 파일의 제목")
             String title,
-            @ToolParam(description = "확장자를 포함한 파일 이름")
+            @ToolParam(description = "확장자를 포함한 원본 파일 이름")
             String filename,
             @ToolParam(description = "메시지 내용")
             String text
@@ -118,7 +118,7 @@ public class SlackServiceImpl implements SlackService {
             String fileData,
             @ToolParam(description = "업로드할 파일의 제목")
             String title,
-            @ToolParam(description = "확장자를 포함한 파일 이름")
+            @ToolParam(description = "확장자를 포함한 원본 파일 이름")
             String filename,
             @ToolParam(description = "메시지 내용")
             String text
