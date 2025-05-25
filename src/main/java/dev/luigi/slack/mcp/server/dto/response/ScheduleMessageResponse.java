@@ -1,13 +1,16 @@
 package dev.luigi.slack.mcp.server.dto.response;
 
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import dev.luigi.slack.mcp.server.dto.common.Message;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@SuperBuilder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ScheduleMessageResponse extends SlackResponse {
-    private String scheduledMessageId;
-    private Long postAt;
+    private Message message;
+    private int postAt;
 }

@@ -12,5 +12,5 @@ import lombok.*;
 public class ScheduleMessageRequest {
     private String channel;
     private String text;
-    private Long postAt;
+    private int postAt;
 }

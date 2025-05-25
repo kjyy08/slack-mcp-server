@@ -1,7 +1,6 @@
 package dev.luigi.slack.mcp.server.service;
 
 import dev.luigi.slack.mcp.server.dto.request.ReactionRequest;
-import dev.luigi.slack.mcp.server.dto.request.ScheduleMessageRequest;
 import dev.luigi.slack.mcp.server.dto.response.*;
 
 public interface SlackService {
@@ -17,5 +16,5 @@ public interface SlackService {
 
     ReactionResponse removeReaction(ReactionRequest req);
 
-    ScheduleMessageResponse scheduleMessage(ScheduleMessageRequest req);
+    ScheduleMessageResponse scheduleMessage(String text, int postAt);
 }

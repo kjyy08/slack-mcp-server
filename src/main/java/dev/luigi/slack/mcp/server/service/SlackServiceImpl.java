@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Base64;
 
 @Service
@@ -28,14 +30,13 @@ public class SlackServiceImpl implements SlackService {
     @Value("${slack.slack-channel-id}")
     private String channelId;
 
-    @Tool(name = "postMessage", description = """
+    @Tool(name = "postSlackMessage", description = """
             슬랙 메시지를 전송합니다
             """)
     @Override
     public PostMessageResponse postMessage(
             @ToolParam(description = """
                     기존의 마크다운 문법 대신 다음 형식의 슬랙 전용 마크다운 문법을 지켜서 입력하세요:
-                    
                     - *굵게* (**굵게** 사용 금지)
                     - _기울임_ (__기울임__ 사용 금지)
                     - `인라인 코드`
@@ -44,7 +45,6 @@ public class SlackServiceImpl implements SlackService {
                     - - 리스트, 1. 번호 목록
                     - <http://url|링크 텍스트>
                     - 줄바꿈은 두 줄 사이 공백 또는 \\n 사용
-                    
                     표, 헤더(# 제목), 이미지, HTML 태그는 지원되지 않습니다.
                     """)
             String text
@@ -57,7 +57,7 @@ public class SlackServiceImpl implements SlackService {
         return messageService.postMessage(postMessageRequest);
     }
 
-    @Tool(name = "channelHistory", description = """
+    @Tool(name = "slackChannelHistory", description = """
             슬랙 채널의 메시지 내역을 조회합니다
             """)
     @Override
@@ -76,7 +76,7 @@ public class SlackServiceImpl implements SlackService {
         return channelHistoryService.fetchChannelHistory(channelHistoryRequest);
     }
 
-    @Tool(name = "uploadFile", description = """
+    @Tool(name = "uploadFileToSlack", description = """
             슬랙 채널에 파일을 절대 경로 참조 방식으로 업로드합니다
             """)
     @Override
@@ -109,7 +109,7 @@ public class SlackServiceImpl implements SlackService {
         return fileService.uploadFile(req);
     }
 
-    @Tool(name = "uploadFileByBase64", description = """
+    @Tool(name = "uploadFileToSlackByBase64", description = """
             슬랙 채널에 파일을 base64 방식으로 이용하여 업로드합니다
             """)
     @Override
@@ -146,8 +146,39 @@ public class SlackServiceImpl implements SlackService {
         return reactionService.removeReaction(req);
     }
 
+    @Tool(name = "slackScheduleMessage", description = """
+            슬랙 채널에 메시지를 예약 전송합니다
+            """)
     @Override
-    public ScheduleMessageResponse scheduleMessage(ScheduleMessageRequest req) {
+    public ScheduleMessageResponse scheduleMessage(
+            @ToolParam(description = """
+                    기존의 마크다운 문법 대신 다음 형식의 슬랙 전용 마크다운 문법을 지켜서 입력하세요:
+                    - *굵게* (**굵게** 사용 금지)
+                    - _기울임_ (__기울임__ 사용 금지)
+                    - `인라인 코드`
+                    - ```여러 줄 코드```
+                    - > 인용
+                    - - 리스트, 1. 번호 목록
+                    - <http://url|링크 텍스트>
+                    - 줄바꿈은 두 줄 사이 공백 또는 \\n 사용
+                    표, 헤더(# 제목), 이미지, HTML 태그는 지원되지 않습니다.
+                    """)
+            String text,
+            @ToolParam(description = """
+                    예약 전송할 시간(분 단위)
+                    - 예: 1시간 후 예약 전송 -> 60
+                    """)
+            int postAt) {
+        int postAtTimestamp = (int) Instant.now()
+                .plus(postAt, ChronoUnit.MINUTES)
+                .getEpochSecond();
+
+        ScheduleMessageRequest req = ScheduleMessageRequest.builder()
+                .channel(channelId)
+                .text(text)
+                .postAt(postAtTimestamp)
+                .build();
+
         return scheduleService.scheduleMessage(req);
     }
 }

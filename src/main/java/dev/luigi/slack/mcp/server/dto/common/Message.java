@@ -10,7 +10,5 @@ import lombok.*;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Message {
-    private String user;
     private String text;
-    private String ts;
 }
