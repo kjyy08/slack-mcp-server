@@ -10,33 +10,33 @@
 
 ### 구현된 도구
 
-#### 1. 메시지 전송 (postMessage)
+#### 1. 메시지 전송 (postSlackMessage)
 
 * Slack 채널에 메시지를 전송합니다. 마크다운 형식을 일부 지원합니다.
 
-#### 2. 채널 히스토리 조회 (channelHistory)
+#### 2. 채널 히스토리 조회 (slackChannelHistory)
 
 * Slack 채널의 메시지 내역을 조회합니다. 페이징 처리를 위한 커서와 조회할 메시지 수를 지정할 수 있습니다.
 
-#### 3. 파일 업로드 (uploadFile)
+#### 3. 파일 업로드 (uploadFileToSlack)
 
 * 절대 경로로 지정된 파일을 Slack 채널에 업로드합니다.
 
-#### 4. Base64 파일 업로드 (uploadFileByBase64)
+#### 4. Base64 파일 업로드 (uploadFileToSlackByBase64)
 
 * Base64로 인코딩된 파일 데이터를 Slack 채널에 업로드합니다.
     * 단, 파일 크기가 큰 경우 토큰 사용량이 증가할 수 있어 주의가 필요합니다.
       > 절대 경로 지정 방식을 권장합니다.
+
+#### 5. 예약 메시지 (slackScheduleMessage)
+
+* 특정 시간에 메시지를 전송하도록 예약하는 기능입니다.
 
 ### 구현 예정 도구
 
 #### 1. 리액션 추가/삭제 (addReaction/removeReaction)
 
 * 메시지에 이모지 리액션을 추가하거나 삭제하는 기능입니다.
-
-#### 2. 예약 메시지 (scheduleMessage)
-
-* 특정 시간에 메시지를 전송하도록 예약하는 기능입니다.
 
 ---
 
