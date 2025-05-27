@@ -32,12 +32,6 @@
 
 * 특정 시간에 메시지를 전송하도록 예약하는 기능입니다.
 
-### 구현 예정 도구
-
-#### 1. 리액션 추가/삭제 (addReaction/removeReaction)
-
-* 메시지에 이모지 리액션을 추가하거나 삭제하는 기능입니다.
-
 ---
 
 ## 설정 방법
@@ -92,7 +86,6 @@ src/main/java/dev/luigi/slack/mcp/server/
     ├── file/                      # 파일 관련 서비스
     ├── history/                   # 채널 히스토리 관련 서비스
     ├── message/                   # 메시지 관련 서비스
-    ├── reaction/                  # 리액션 관련 서비스
     └── schedule/                  # 예약 메시지 관련 서비스
 ```
 
