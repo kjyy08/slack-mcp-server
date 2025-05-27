@@ -1,11 +1,16 @@
 package dev.luigi.slack.mcp.server.service;
 
-import dev.luigi.slack.mcp.server.dto.request.*;
-import dev.luigi.slack.mcp.server.dto.response.*;
+import dev.luigi.slack.mcp.server.dto.request.ChannelHistoryRequest;
+import dev.luigi.slack.mcp.server.dto.request.PostMessageRequest;
+import dev.luigi.slack.mcp.server.dto.request.ScheduleMessageRequest;
+import dev.luigi.slack.mcp.server.dto.request.UploadFileRequest;
+import dev.luigi.slack.mcp.server.dto.response.ChannelHistoryResponse;
+import dev.luigi.slack.mcp.server.dto.response.PostMessageResponse;
+import dev.luigi.slack.mcp.server.dto.response.ScheduleMessageResponse;
+import dev.luigi.slack.mcp.server.dto.response.UploadFileResponse;
 import dev.luigi.slack.mcp.server.service.file.FileService;
 import dev.luigi.slack.mcp.server.service.history.ChannelHistoryService;
 import dev.luigi.slack.mcp.server.service.message.MessageService;
-import dev.luigi.slack.mcp.server.service.reaction.ReactionService;
 import dev.luigi.slack.mcp.server.service.schedule.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.tool.annotation.Tool;
@@ -24,7 +29,6 @@ public class SlackServiceImpl implements SlackService {
     private final MessageService messageService;
     private final ScheduleService scheduleService;
     private final FileService fileService;
-    private final ReactionService reactionService;
     private final ChannelHistoryService channelHistoryService;
 
     @Value("${slack.slack-channel-id}")
@@ -134,16 +138,6 @@ public class SlackServiceImpl implements SlackService {
                 .build();
 
         return fileService.uploadFileByBase64(req);
-    }
-
-    @Override
-    public ReactionResponse addReaction(ReactionRequest req) {
-        return reactionService.addReaction(req);
-    }
-
-    @Override
-    public ReactionResponse removeReaction(ReactionRequest req) {
-        return reactionService.removeReaction(req);
     }
 
     @Tool(name = "slackScheduleMessage", description = """
