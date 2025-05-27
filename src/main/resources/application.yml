@@ -8,9 +8,10 @@ spring:
     mcp:
       server:
         name: slack-mcp-server
-        version: 0.0.1
+        version: 1.0.0
         stdio: true
         type: sync
+        instructions: "Slack MCP Server is a server that allows you to interact with Slack's API using the Model Context Protocol."
 
 server:
   port: 8180
