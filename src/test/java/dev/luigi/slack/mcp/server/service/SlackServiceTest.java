@@ -38,7 +38,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class SlackServiceImplTest {
+class SlackServiceTest {
 
     @Mock
     private MessageService messageService;
